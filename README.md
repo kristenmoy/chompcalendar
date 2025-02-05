@@ -1,1 +1,7 @@
 # chompcalendar
+
+## Solution
+Chomp Calendar will be an intuitive, cloud-based application that helps college students stay organized and manage their tasks effectively. It will have features such as a central calendar, to-do lists, and progress tracking. The calendar enables users to easily organize their schedules and stay on top of assignment deadlines. The tool is accessible from any device, ensuring that students can manage their tasks whether they are in class, studying, or attending extracurricular activities. Chomp Calendar ensures each user’s data is securely isolated, accessible only via a password-protected login. It is not only efficient but also adaptable, offering a flexible, effective way to balance academic, personal, and social commitments, ultimately boosting productivity and reducing stress.
+
+## Project Vision
+For college students who need an efficient way to manage their academic schedules, deadlines, and tasks. Chomp Calendar is a cloud-based, multi-tenant web application that assists users in staying organized by offering features such as calendar integration, to-do lists, and progress tracking. Unlike traditional productivity tools, our product goes beyond focusing strictly on academic scheduling; it also emphasizes the management of personal and social resolutions in order to balance their life and mitigate stress, thereby increasing the user’s productivity.
