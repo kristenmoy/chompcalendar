@@ -39,6 +39,18 @@ def is_valid_password(password):
 with app.app_context():
     db.create_all()
 
+@app.route("/")
+def signon():
+    return render_template("Signin.html")
+
+@app.route("/register")
+def register_page():
+    return render_template("Register.html")
+
+@app.route("/login")
+def login_page():
+    return render_template("Login.html")
+
 @app.route("/register", methods=["POST"])
 def register():
     data = request.get_json()
@@ -65,16 +77,19 @@ def send_registration_email(email, username):
         subject="Welcome to Chomp Calendar!",
         recipients=[email],
         body=f"""Hello {username},
+        
 Your account has been created successfully!
 Thank you for using Chomp Calendar!
+
 Best,  
 Chomp Calendar Team""")
+
     try:
         mail.send(msg)
         print("Email sent successfully!")
-        return True
+        return True 
     except Exception as e:
-        print(f"Error sending email: {e}")
+        print(f"Error sending email: {e}") 
         return False
 
 @app.route("/login", methods=["POST"])
@@ -84,6 +99,7 @@ def login():
     password = data.get("password")
 
     user = User.query.filter_by(username=username).first()
+
     if not user or not check_password_hash(user.password, password):
         return jsonify({"success": False, "message": "Invalid username or password."})
 
@@ -133,10 +149,9 @@ def reset_password(token):
     del reset_tokens[token]
 
     return "Password successfully reset!"
-
 @app.route("/calendar")
 def dashboard():
     return "<h1>Chomp Calendar Holder</h1>"
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
