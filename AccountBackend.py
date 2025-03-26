@@ -157,25 +157,7 @@ def request_reset():
         print(f"Error sending reset email: {e}")
         return jsonify({"success": False, "message": "Failed to send reset email."})
 
-@app.route("/reset-password/<token>", methods=["GET", "POST"])
-def reset_password(token):
-    email = reset_tokens.get(token)
-    if not email:
-        return "Invalid or expired token.", 400
 
-    if request.method == "GET":
-        return render_template("reset_password.html", token=token)
-
-    new_password = request.form["new_password"]
-    if not is_valid_password(new_password):
-        return "Password does not meet security requirements.", 400
-
-    user = User.query.filter_by(email=email).first()
-    user.password = generate_password_hash(new_password)
-    db.session.commit()
-    del reset_tokens[token]
-
-    return "Password successfully reset!"
 @app.route("/calendar")
 def dashboard():
     return "<h1>Chomp Calendar Holder</h1>"
