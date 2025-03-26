@@ -51,6 +51,10 @@ def register_page():
 def login_page():
     return render_template("Login.html")
 
+@app.route("/forgot-password")
+def forgot_password():
+    return render_template("reset_password.html")
+
 @app.route("/register", methods=["POST"])
 def register():
     data = request.get_json()
