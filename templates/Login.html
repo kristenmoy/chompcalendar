@@ -40,6 +40,19 @@
             color: red;
             font-size: 15px;
         }
+        .link-button {
+            background: none;
+            color: #007bff;
+            border: none;
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .link-button:hover {
+            color: #0056b3;
+        }
+        
     </style>
 </head>
 <body>
@@ -51,7 +64,12 @@
             <p id="errorMessage" class="error"></p>
             <button type="submit">Login</button>
         </form>
+
+        <button class="link-button" onclick="window.location.href='/forgot-password'">Forgot Password?</button>
+
         <button onclick="window.location.href='/'">Back</button>
+        
+        
     </div>    
 
     <script>
