@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chomp Calendar</title>
+    <link rel="stylesheet" href="calendar.css">
+</head>
+<body>
+    <h1>Chomp Calendar</h1>
+    <div class="container">
+        <div class="top-controls">
+            <div class="controls">
+                <label for="view-select">View: </label>
+                <select id="view-select">
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                </select>
+            </div>
+            <div id="current-date"></div>
+            <button id="create-event-button">Create Event</button>
+        </div>
+        <div id="calendar" class="calendar"></div>
+    </div>
+    <div id="event-modal" class="modal">
+        <div class="modal-content">
+            <h2>Create Event</h2>
+            <label for="event-name">Event Name:</label>
+            <input type="text" id="event-name">  
+            <label for="event-date">Date:</label>
+            <input type="date" id="event-date">
+            <label for="event-time">Time:</label>
+            <input type="time" id="event-time">
+            <div class="modal-buttons">
+                <button id="add-event-button">Add</button>
+                <button id="cancel-event-button">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <script src="calendar.js"></script>
+    <script>
+        function updateCurrentDate() {
+            const currentDateDiv = document.getElementById("current-date");
+            const today = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            currentDateDiv.textContent = today.toLocaleDateString('en-US', options);
+        }
+        updateCurrentDate();
+        const modal = document.getElementById("event-modal");
+        const createEventButton = document.getElementById("create-event-button");
+        const cancelEventButton = document.getElementById("cancel-event-button");
+        const addEventButton = document.getElementById("add-event-button");
+        createEventButton.addEventListener("click", () => {
+            modal.style.display = "flex";
+        });
+        cancelEventButton.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+        addEventButton.addEventListener("click", () => {
+            const eventName = document.getElementById("event-name").value;
+            const eventDate = document.getElementById("event-date").value;
+            const eventTime = document.getElementById("event-time").value;
+            if (eventName && eventDate) {
+                addEventToCalendar(eventName, eventDate);
+                modal.style.display = "none";
+            }
+        });
+        window.addEventListener("click", (event) => {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+    </script>
+</body>
+</html>
