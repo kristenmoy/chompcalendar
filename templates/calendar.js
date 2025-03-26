@@ -136,13 +136,11 @@ function displayEvents(date, dayDiv){
             categorySpan.classList.add('event-category');
             categorySpan.textContent = event.category ? ` [${event.category}]` : '';
             eventDiv.appendChild(categorySpan);
-
             dayDiv.appendChild(eventDiv);
         });
     }
 }
 
-// 🔧 Modified to include category
 function addEventToCalendar(name, date, category = '') {
     if (!events[date]) {
         events[date] = [];

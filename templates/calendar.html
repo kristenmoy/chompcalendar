@@ -12,9 +12,9 @@
             <div class="controls">
                 <label for="view-select">View: </label>
                 <select id="view-select">
-                    <option value="monthly">Monthly</option>
-                    <option value="weekly">Weekly</option>
                     <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
                 </select>
             </div>
             <div id="current-date"></div>
@@ -23,7 +23,6 @@
         </div>
         <div id="calendar" class="calendar"></div>
     </div>
-
     <div id="event-modal" class="modal">
         <div class="modal-content">
             <h2>Create Event</h2>
@@ -44,7 +43,6 @@
             </div>
         </div>
     </div>
-
     <!-- 🔧 Added Category Modal -->
     <div id="category-modal" class="modal">
         <div class="modal-content">
@@ -57,7 +55,6 @@
             </div>
         </div>
     </div>
-
     <script src="calendar.js"></script>
     <script>
         function updateCurrentDate() {
@@ -76,11 +73,10 @@
         createEventButton.addEventListener("click", () => {
             modal.style.display = "flex";
         });
-
         cancelEventButton.addEventListener("click", () => {
             modal.style.display = "none";
         });
-
+      
         addEventButton.addEventListener("click", () => {
             const eventName = document.getElementById("event-name").value;
             const eventDate = document.getElementById("event-date").value;

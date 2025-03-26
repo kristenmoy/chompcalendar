@@ -1,4 +1,4 @@
-body {
+body{
     font-family: Arial, sans-serif;
     background-color: #006400;
     margin: 0;
@@ -10,14 +10,14 @@ body {
     color: white;
 }
 
-.container {
+.container{
     text-align: center;
     width: 100%;
     max-width: 900px;
     margin-top: 100px;
 }
 
-.top-controls {
+.top-controls{
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -41,7 +41,7 @@ body {
     background-color: #e0e0e0;
 }
 
-#calendar {
+#calendar{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -51,7 +51,7 @@ body {
 }
 
 .calendar-week,
-.calendar-month {
+.calendar-month{
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 5px;
@@ -72,7 +72,7 @@ body {
     color: black;
 }
 
-.calendar-day .day-number {
+.calendar-day .day-number{
     position: absolute;
     top: 5px;
     left: 5px;
@@ -80,7 +80,7 @@ body {
     font-weight: bold;
 }
 
-.calendar-header {
+.calendar-header{
     font-weight: bold;
     background-color: #ddd;
     display: flex;
@@ -89,11 +89,11 @@ body {
     color: black;
 }
 
-.empty {
+.empty{
     visibility: hidden;
 }
 
-h1 {
+h1{
     position: fixed;
     top: 0;
     left: 0;
@@ -107,7 +107,7 @@ h1 {
     z-index: 10;
 }
 
-.modal {
+.modal{
     display: none;
     position: fixed;
     top: 0;
@@ -119,7 +119,7 @@ h1 {
     align-items: center;
 }
 
-.modal-content {
+.modal-content{
     background: white;
     padding: 20px;
     border-radius: 5px;
@@ -135,20 +135,20 @@ h1 {
     margin: 5px 0;
 }
 
-.modal-buttons {
+.modal-buttons{
     display: flex;
     justify-content: space-around;
     margin-top: 10px;
 }
 
-.modal-buttons button {
+.modal-buttons button{
     padding: 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 
-#add-event-button {
+#add-event-button{
     background-color: green;
     color: white;
 }
