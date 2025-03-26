@@ -51,9 +51,32 @@ def register_page():
 def login_page():
     return render_template("Login.html")
 
+
 @app.route("/forgot-password")
 def forgot_password():
-    return render_template("reset_password.html")
+    return render_template("forgot_password.html")
+
+@app.route("/reset-password/<token>", methods=["GET", "POST"])
+def reset_password(token):
+    email = reset_tokens.get(token)
+    if not email:
+        return "Invalid or expired token.", 400
+
+    if request.method == "GET":
+        return render_template("reset_password.html", token=token)
+
+    new_password = request.form["new_password"]
+    if not is_valid_password(new_password):
+        return "Password does not meet security requirements.", 400
+
+    user = User.query.filter_by(email=email).first()
+    user.password = generate_password_hash(new_password)
+    db.session.commit()
+    del reset_tokens[token]
+
+    return "Password successfully reset!"
+
+
 
 @app.route("/register", methods=["POST"])
 def register():
