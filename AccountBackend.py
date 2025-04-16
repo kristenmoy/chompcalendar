@@ -51,6 +51,10 @@ def register_page():
 def login_page():
     return render_template("Login.html")
 
+@app.route("/calendar")
+def calendar_page():
+    return render_template("calendar.html")
+
 
 @app.route("/forgot-password")
 def forgot_password():
@@ -158,9 +162,9 @@ def request_reset():
         return jsonify({"success": False, "message": "Failed to send reset email."})
 
 
-@app.route("/calendar")
-def dashboard():
-    return "<h1>Chomp Calendar Holder</h1>"
+# @app.route("/calendar")
+# def dashboard():
+#     return "calendar.html"
 
 if __name__ == "__main__":
     app.run(debug=True)

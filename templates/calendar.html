@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chomp Calendar</title>
-    <link rel="stylesheet" href="calendar.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='calendar.css') }}">
 </head>
 <body>
     <h1>Chomp Calendar</h1>
@@ -55,7 +55,7 @@
             </div>
         </div>
     </div>
-    <script src="calendar.js"></script>
+    <script src="{{ url_for('static', filename='calendar.js') }}"></script>
     <script>
         function updateCurrentDate() {
             const currentDateDiv = document.getElementById("current-date");
