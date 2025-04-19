@@ -191,9 +191,5 @@ def save_settings():
         return jsonify({"success": True, "message": "Settings saved."})
     return jsonify({"success": False, "message": "User not found."})
 
-@app.route("/whoami")
-def whoami():
-    return session.get("username", "Not logged in")
-
 if __name__ == "__main__":
     app.run(debug=True)
