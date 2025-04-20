@@ -36,6 +36,9 @@
             <input type="date" id="event-date">
             <label for="event-time">Time:</label>
             <input type="time" id="event-time">
+            <label for="event-description">Description (optional):</label>
+            <textarea id="event-description" rows="3" placeholder="Add notes or details..."></textarea>
+            <!-- 🔧 Replaced input with dropdown -->
             <label for="event-category">Category:</label>
             <select id="event-category">
                 <option value="">None</option>
@@ -83,10 +86,11 @@
             const eventName = document.getElementById("event-name").value;
             const eventDate = document.getElementById("event-date").value;
             const eventTime = document.getElementById("event-time").value;
-            const eventCategory = document.getElementById("event-category").value;
+            const eventDescription = document.getElementById("event-description").value;
+            const eventCategory = document.getElementById("event-category").value; // 🔧 Added
 
             if (eventName && eventDate) {
-                addEventToCalendar(eventName, eventDate, eventCategory);
+                addEventToCalendar(eventName, eventDate, eventCategory, eventDescription); // 🔧 Modified
                 modal.style.display = "none";
             }
         });
