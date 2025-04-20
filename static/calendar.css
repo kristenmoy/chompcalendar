@@ -27,7 +27,7 @@ body{
 }
 
 #create-event-button,
-#create-category-button {
+#create-category-button{
     padding: 10px 15px;
     font-size: 16px;
     background-color: white;
@@ -37,7 +37,7 @@ body{
 }
 
 #create-event-button:hover,
-#create-category-button:hover {
+#create-category-button:hover{
     background-color: #e0e0e0;
 }
 
@@ -58,7 +58,7 @@ body{
     width: 100%;
 }
 
-.calendar-day {
+.calendar-day{
     width: 100px;
     height: 100px;
     margin: 5px;
@@ -70,6 +70,12 @@ body{
     padding: 5px;
     position: relative;
     color: black;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.calendar-day:hover{
+    background-color: #f0f0f0;
 }
 
 .calendar-day .day-number{
@@ -78,6 +84,13 @@ body{
     left: 5px;
     font-size: 14px;
     font-weight: bold;
+}
+
+.calendar-day .event-count{
+    margin-top: auto;
+    margin-bottom: 5px;
+    font-size: 12px;
+    color: #333;
 }
 
 .calendar-header{
@@ -117,22 +130,27 @@ h1{
     background-color: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
+    z-index: 20;
 }
 
 .modal-content{
     background: white;
     padding: 20px;
     border-radius: 5px;
-    text-align: center;
+    text-align: left;
     width: 300px;
+    max-height: 80vh;
+    overflow-y: auto;
     color: black;
 }
 
 .modal-content input,
-.modal-content select {
+.modal-content select,
+.modal-content textarea{
     width: 100%;
     padding: 5px;
     margin: 5px 0;
+    box-sizing: border-box;
 }
 
 .modal-buttons{
@@ -154,14 +172,15 @@ h1{
 }
 
 #cancel-event-button,
-#cancel-category-button {
+#cancel-category-button,
+#close-events-button{
     background-color: red;
     color: white;
 }
 
-#settings-link {
-    position: absolute;
-    top: 10px;
+#settings-link{
+    position: fixed;
+    top: 15px;
     right: 20px;
     font-size: 16px;
     color: black;
@@ -173,34 +192,17 @@ h1{
     z-index: 11;
 }
 
-#settings-link:hover {
+#settings-link:hover{
     background-color: #e0e0e0;
 }
-.calendar-day .event {
-    color: black;
-    font-size: 12px;
+
+#events-list{
     margin-top: 10px;
-    text-align: left;
-    padding-left: 10px;
 }
 
-.calendar-day .event::before {
-    content: "• ";
-    color: black;
-    font-size: 16px;
-    padding-right: 5px;
-    margin-left: 0;
-}
-
-.top-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background-color: #006400;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    z-index: 10;
+.view-event-entry{
+    padding: 5px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    font-size: 14px;
 }
