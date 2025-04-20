@@ -131,12 +131,22 @@ function displayEvents(date, dayDiv){
             const eventDiv = document.createElement('div');
             eventDiv.classList.add('event');
             eventDiv.textContent = event.name;
+            
 
             const categorySpan = document.createElement('span');
             categorySpan.classList.add('event-category');
             categorySpan.textContent = event.category ? ` [${event.category}]` : '';
             eventDiv.appendChild(categorySpan);
+
+            if(event.description){
+                const descrptionDiv = document.createElement('div');
+                descriptionDiv.classList.add('event-description');
+                descriptionDiv.textContent = event.description;
+                eventDiv.appendChild(descriptionDiv);
+            }
+
             dayDiv.appendChild(eventDiv);
+            
         });
     }
 }
