@@ -174,3 +174,13 @@ h1{
     padding-right: 5px;
     margin-left: 0;
 }
+
+.event-description {
+    font-size: 11px;
+    color: #666;
+    margin-top: 4px;
+    padding-left: 10px;
+    word-wrap: break-word;
+    max-height: 40px;
+    overflow-y: auto;
+}
