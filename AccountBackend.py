@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail, Message
 from werkzeug.security import generate_password_hash, check_password_hash
 import re, secrets
 
 app = Flask(__name__)
+app.secret_key = "secret-key?"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
@@ -24,6 +25,7 @@ class User(db.Model):
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
+    default_view = db.Column(db.String(10), default="monthly")
 
     def __repr__(self):
         return f"<User {self.username}>"
@@ -50,6 +52,21 @@ def register_page():
 @app.route("/login")
 def login_page():
     return render_template("Login.html")
+
+@app.route("/calendar")
+def calendar_page():
+    username = session.get("username") 
+    user = User.query.filter_by(username=username).first()
+    default_view = user.default_view if user and user.default_view else "monthly"
+    return render_template("calendar.html", default_view=default_view, username=username)
+
+@app.route("/settings")
+def settings_page():
+    username = session.get("username")
+    user = User.query.filter_by(username=username).first()
+    default_view = user.default_view if user and user.default_view else "monthly"
+    return render_template("settings.html", default_view=default_view, username=username)
+
 
 
 @app.route("/forgot-password")
@@ -130,6 +147,7 @@ def login():
     if not user or not check_password_hash(user.password, password):
         return jsonify({"success": False, "message": "Invalid username or password."})
 
+    session['username'] = user.username
     return jsonify({"success": True, "message": "Login successful!"})
 
 @app.route("/request-reset", methods=["POST"])
@@ -157,10 +175,21 @@ def request_reset():
         print(f"Error sending reset email: {e}")
         return jsonify({"success": False, "message": "Failed to send reset email."})
 
+@app.route("/save-settings", methods=["POST"])
+def save_settings():
+    data = request.get_json()
+    selected_view = data.get("default_view")
 
-@app.route("/calendar")
-def dashboard():
-    return "<h1>Chomp Calendar Holder</h1>"
+    default_view = selected_view if selected_view else "monthly"
+
+    username = session.get("username")
+    user = User.query.filter_by(username=username).first()
+
+    if user:
+        user.default_view = default_view
+        db.session.commit()
+        return jsonify({"success": True, "message": "Settings saved."})
+    return jsonify({"success": False, "message": "User not found."})
 
 if __name__ == "__main__":
     app.run(debug=True)

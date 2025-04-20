@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Settings - Chomp Calendar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #006400;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 100px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            color: black;
+            width: 300px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #006400;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #228B22;
+        }
+
+        a {
+            margin-top: 20px;
+            color: white;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h2>{{username}}'s Settings</h2>
+    <form id="settings-form">
+        <label for="default-view">Default Calendar View:</label>
+        <select id="default-view" name="default_view">
+            <option value="" {% if default_view == '' %}selected{% endif %}></option>
+            <option value="daily" {% if default_view == 'daily' %}selected{% endif %}>Daily</option>
+            <option value="weekly" {% if default_view == 'weekly' %}selected{% endif %}>Weekly</option>
+            <option value="monthly" {% if default_view == 'monthly' %}selected{% endif %}>Monthly</option>
+        </select>
+        
+        <button type="submit">Save Preferences</button>
+    </form>
+    <a href="/calendar">Back to Calendar</a>
+
+    <script>
+        document.getElementById("settings-form").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const view = document.getElementById("default-view").value;
+
+            const res = await fetch("/save-settings", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ default_view: view })
+            });
+
+            const result = await res.json();
+            alert(result.message);
+        });
+    </script>
+</body>
+</html>

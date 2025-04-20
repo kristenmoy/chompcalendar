@@ -3,23 +3,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chomp Calendar</title>
-    <link rel="stylesheet" href="calendar.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='calendar.css') }}">
 </head>
 <body>
-    <h1>Chomp Calendar</h1>
+    <div class="top-bar">
+        <h1>Chomp Calendar</h1>
+        <a href="/settings" id="settings-link" title="Settings">Settings</a>
+    </div>
     <div class="container">
         <div class="top-controls">
             <div class="controls">
                 <label for="view-select">View: </label>
                 <select id="view-select">
-                    <option value="daily">Daily</option>
-                    <option value="weekly">Weekly</option>
-                    <option value="monthly">Monthly</option>
+                    <option value="" {% if default_view == '' %}selected{% endif %}>Monthly</option>
+                    <option value="daily" {% if default_view == 'daily' %}selected{% endif %}>Daily</option>
+                    <option value="weekly" {% if default_view == 'weekly' %}selected{% endif %}>Weekly</option>
+                    <option value="monthly" {% if default_view == 'monthly' %}selected{% endif %}>Monthly</option>
                 </select>
             </div>
             <div id="current-date"></div>
             <button id="create-event-button">Create Event</button>
-            <button id="create-category-button">Create Category</button> <!-- 🔧 Added -->
+            <button id="create-category-button">Create Category</button>
         </div>
         <div id="calendar" class="calendar"></div>
     </div>
@@ -45,7 +49,6 @@
             </div>
         </div>
     </div>
-    <!-- 🔧 Added Category Modal -->
     <div id="category-modal" class="modal">
         <div class="modal-content">
             <h2>Create Category</h2>
@@ -57,7 +60,7 @@
             </div>
         </div>
     </div>
-    <script src="calendar.js"></script>
+    <script src="{{ url_for('static', filename='calendar.js') }}"></script>
     <script>
         function updateCurrentDate() {
             const currentDateDiv = document.getElementById("current-date");
@@ -92,7 +95,6 @@
             }
         });
 
-        // 🔧 Added: Modal for category creation
         const categoryModal = document.getElementById("category-modal");
         const createCategoryButton = document.getElementById("create-category-button");
         const cancelCategoryButton = document.getElementById("cancel-category-button");
@@ -110,7 +112,7 @@
             const name = document.getElementById("new-category-name").value.trim();
             if (name && !categories.includes(name)) {
                 categories.push(name);
-                updateCategoryDropdown(); // 🔧 Refresh dropdown
+                updateCategoryDropdown();
                 categoryModal.style.display = "none";
             }
         });
