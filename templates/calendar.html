@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,7 +39,6 @@
             <input type="time" id="event-time">
             <label for="event-description">Description (optional):</label>
             <textarea id="event-description" rows="3" placeholder="Add notes or details..."></textarea>
-            <!-- 🔧 Replaced input with dropdown -->
             <label for="event-category">Category:</label>
             <select id="event-category">
                 <option value="">None</option>
@@ -60,69 +60,15 @@
             </div>
         </div>
     </div>
+    <div id="view-events-modal" class="modal">
+        <div class="modal-content">
+            <h2>Events for <span id="view-events-date"></span></h2>
+            <div id="events-list"></div>
+            <div class="modal-buttons">
+                <button id="close-events-button">Close</button>
+            </div>
+        </div>
+    </div>
     <script src="{{ url_for('static', filename='calendar.js') }}"></script>
-    <script>
-        function updateCurrentDate() {
-            const currentDateDiv = document.getElementById("current-date");
-            const today = new Date();
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            currentDateDiv.textContent = today.toLocaleDateString('en-US', options);
-        }
-        updateCurrentDate();
-
-        const modal = document.getElementById("event-modal");
-        const createEventButton = document.getElementById("create-event-button");
-        const cancelEventButton = document.getElementById("cancel-event-button");
-        const addEventButton = document.getElementById("add-event-button");
-
-        createEventButton.addEventListener("click", () => {
-            modal.style.display = "flex";
-        });
-        cancelEventButton.addEventListener("click", () => {
-            modal.style.display = "none";
-        });
-      
-        addEventButton.addEventListener("click", () => {
-            const eventName = document.getElementById("event-name").value;
-            const eventDate = document.getElementById("event-date").value;
-            const eventTime = document.getElementById("event-time").value;
-            const eventDescription = document.getElementById("event-description").value;
-            const eventCategory = document.getElementById("event-category").value; // 🔧 Added
-
-            if (eventName && eventDate) {
-                addEventToCalendar(eventName, eventDate, eventCategory, eventDescription); // 🔧 Modified
-                modal.style.display = "none";
-            }
-        });
-
-        const categoryModal = document.getElementById("category-modal");
-        const createCategoryButton = document.getElementById("create-category-button");
-        const cancelCategoryButton = document.getElementById("cancel-category-button");
-        const addCategoryButton = document.getElementById("add-category-button");
-
-        createCategoryButton.addEventListener("click", () => {
-            categoryModal.style.display = "flex";
-        });
-
-        cancelCategoryButton.addEventListener("click", () => {
-            categoryModal.style.display = "none";
-        });
-
-        addCategoryButton.addEventListener("click", () => {
-            const name = document.getElementById("new-category-name").value.trim();
-            if (name && !categories.includes(name)) {
-                categories.push(name);
-                updateCategoryDropdown();
-                categoryModal.style.display = "none";
-            }
-        });
-
-        window.addEventListener("click", (event) => {
-            if (event.target === modal || event.target === categoryModal) {
-                modal.style.display = "none";
-                categoryModal.style.display = "none";
-            }
-        });
-    </script>
 </body>
 </html>
