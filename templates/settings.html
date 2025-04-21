@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Settings - Chomp Calendar</title>
     <style>
-        body {
+        body{
             font-family: Arial, sans-serif;
             background-color: #006400;
             color: white;
@@ -12,52 +12,127 @@
             flex-direction: column;
             align-items: center;
             padding-top: 100px;
+            position: relative;
         }
 
-        h2 {
+        h2{
             margin-bottom: 20px;
         }
 
-        form {
+        form{
             background: white;
             padding: 20px;
             border-radius: 10px;
             color: black;
             width: 300px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        label {
+        label{
             display: block;
             margin-bottom: 8px;
             font-weight: bold;
         }
 
-        select {
+        select{
             width: 100%;
             padding: 8px;
             margin-bottom: 15px;
         }
 
-        button {
+        button{
             padding: 10px 15px;
             background-color: #006400;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            width: 100%;
+            width: auto;
         }
 
-        button:hover {
+        button:hover{
             background-color: #228B22;
         }
 
-        a {
+        a{
             margin-top: 20px;
             color: white;
             text-decoration: underline;
         }
+
+        #logout-button{
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #8B0000;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            width: auto;
+        }
+
+        #logout-button:hover{
+            background-color: #A52A2A;
+        }
+        
+        #logout-modal{
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #logout-modal-content{
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            color: black;
+            text-align: center;
+            width: 300px;
+        }
+
+        #logout-modal-content a,
+        #logout-modal-content button{
+            margin: 10px;
+        }
+        
+        .modal-button-group{
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .modal-button{
+            padding: 10px 15px;
+            min-width: 80px;
+            background-color: #006400;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .modal-button.no{
+            background-color: #8B0000;
+        }
+
+        .modal-button:hover{
+            opacity: 0.9;
+        }
+
     </style>
 </head>
 <body>
@@ -70,24 +145,44 @@
             <option value="weekly" {% if default_view == 'weekly' %}selected{% endif %}>Weekly</option>
             <option value="monthly" {% if default_view == 'monthly' %}selected{% endif %}>Monthly</option>
         </select>
-        
         <button type="submit">Save Preferences</button>
     </form>
     <a href="/calendar">Back to Calendar</a>
+    <button id="logout-button">Log Out</button>
+    <div id="logout-modal">
+        <div id="logout-modal-content">
+            <p>Are you sure you want to log out?</p>
+            <div class="modal-button-group">
+                <button id="confirm-logout" class="modal-button yes">Yes</button>
+                <button id="cancel-logout" class="modal-button no">No</button>
+            </div>
+        </div>
+    </div>
 
     <script>
-        document.getElementById("settings-form").addEventListener("submit", async function (e) {
+        document.getElementById("settings-form").addEventListener("submit", async function (e){
             e.preventDefault();
             const view = document.getElementById("default-view").value;
-
             const res = await fetch("/save-settings", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ default_view: view })
             });
-
             const result = await res.json();
             alert(result.message);
+        });
+        const logoutButton = document.getElementById("logout-button");
+        const logoutModal = document.getElementById("logout-modal");
+        const confirmLogout = document.getElementById("confirm-logout");
+        const cancelLogout = document.getElementById("cancel-logout");
+        logoutButton.addEventListener("click", () => {
+            logoutModal.style.display = "flex";
+        });
+        cancelLogout.addEventListener("click", () => {
+            logoutModal.style.display = "none";
+        });
+        confirmLogout.addEventListener("click", () => {
+            window.location.href = "/";
         });
     </script>
 </body>

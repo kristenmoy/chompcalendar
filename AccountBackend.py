@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for, session
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail, Message
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -43,7 +43,12 @@ with app.app_context():
 
 @app.route("/")
 def signon():
-    return render_template("Signin.html")
+    session.clear()
+    response = make_response(render_template("Signin.html"))
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
 
 @app.route("/register")
 def register_page():
@@ -55,19 +60,31 @@ def login_page():
 
 @app.route("/calendar")
 def calendar_page():
-    username = session.get("username") 
+    if 'username' not in session:
+        return redirect(url_for("signon"))
+    username = session["username"]
     user = User.query.filter_by(username=username).first()
     default_view = user.default_view if user and user.default_view else "monthly"
-    return render_template("calendar.html", default_view=default_view, username=username)
+    response = make_response(render_template("calendar.html", default_view=default_view, username=username))
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
 
 @app.route("/settings")
 def settings_page():
-    username = session.get("username")
+    if 'username' not in session:
+        return redirect(url_for("signon"))
+    
+    username = session["username"]
     user = User.query.filter_by(username=username).first()
     default_view = user.default_view if user and user.default_view else "monthly"
-    return render_template("settings.html", default_view=default_view, username=username)
 
-
+    response = make_response(render_template("settings.html", default_view=default_view, username=username))
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
 
 @app.route("/forgot-password")
 def forgot_password():
@@ -92,8 +109,6 @@ def reset_password(token):
     del reset_tokens[token]
 
     return "Password successfully reset!"
-
-
 
 @app.route("/register", methods=["POST"])
 def register():
