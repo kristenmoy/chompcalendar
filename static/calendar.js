@@ -17,7 +17,7 @@ function generateCalendar(view){
     else if(view === 'weekly'){
         generateWeeklyView(new Date());
     }
-    else {
+    else{
         generateMonthlyView(new Date());
     }
 }
@@ -121,20 +121,38 @@ function generateMonthlyView(date){
     calendarContainer.appendChild(monthGrid);
 }
 
-function displayEvents(date, dayDiv){
+function displayEvents(date, dayDiv) {
     const countDiv = dayDiv.querySelector(".event-count") || document.createElement("div");
     countDiv.classList.add("event-count");
     if(events[date] && events[date].length > 0){
+        events[date].sort((a, b) => {
+            const priorityOrder = {High: 1, Medium: 2, Low: 3};
+            if (priorityOrder[a.priority] !== priorityOrder[b.priority]) {
+                return priorityOrder[a.priority] - priorityOrder[b.priority];
+            }
+            if(a.time && b.time){
+                return a.time.localeCompare(b.time);
+            }
+            else if (a.time){
+                return -1;
+            }
+            else if (b.time){
+                return 1;
+            }
+            return 0;
+        });
         countDiv.textContent = `${events[date].length} Item${events[date].length > 1 ? 's' : ''}`;
-    } else {
+    }
+    else{
         countDiv.textContent = '';
     }
     dayDiv.appendChild(countDiv);
 }
 
-function addEventToCalendar(name, date, category = '', description = '', time = '') {
+
+function addEventToCalendar(name, date, category = '', description = '', time = '', priority = 'Low'){
     if (!events[date]) events[date] = [];
-    events[date].push({ name, category, description, time });
+    events[date].push({ name, category, description, time, priority });
     generateCalendar(viewSelect.value);
 }
 
@@ -161,35 +179,51 @@ const eventsListDiv = document.getElementById("events-list");
 function openEventsModal(date){
     const [year, month, day] = date.split("-");
     const formattedDate = new Date(+year, +month - 1, +day).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric"
+        year: "numeric",
+        month: "long",
+        day: "numeric"
     });
-      viewEventsDateSpan.textContent = formattedDate;
+    viewEventsDateSpan.textContent = formattedDate;
     eventsListDiv.innerHTML = '';
     if(events[date] && events[date].length > 0){
+        events[date].sort((a, b) => {
+            const priorityOrder = { High: 1, Medium: 2, Low: 3 };
+            if(priorityOrder[a.priority] !== priorityOrder[b.priority]){
+                return priorityOrder[a.priority] - priorityOrder[b.priority];
+            }
+            if(a.time && b.time){
+                return a.time.localeCompare(b.time);
+            }
+            else if(a.time){
+                return -1;
+            }
+            else if (b.time){
+                return 1;
+            }
+            return 0;
+        });
         events[date].forEach(event => {
             const div = document.createElement('div');
             div.classList.add('view-event-entry');
             let formattedTime = event.time;
             if(event.time){
-              const dateObj = new Date(`1970-01-01T${event.time}`);
-              formattedTime = dateObj.toLocaleTimeString("en-US", {
-                hour: "numeric",
-                minute: "2-digit"
-              });
+                const dateObj = new Date(`1970-01-01T${event.time}`);
+                formattedTime = dateObj.toLocaleTimeString("en-US", {
+                    hour: "numeric",
+                    minute: "2-digit"
+                });
             }
             div.innerHTML = `<strong>${event.name}</strong><br>
-                             Time: ${formattedTime || '—'}<br>
-                             Category: ${event.category || 'None'}<br>
-                             Description: ${event.description || ''}<hr>`;
+                Time: ${formattedTime || '—'}<br>
+                Category: ${event.category || 'None'}<br>
+                Priority: ${event.priority || 'Low'}<br>
+                Description: ${event.description || ''}<hr>`;
             eventsListDiv.appendChild(div);
         });
     }
     else{
         eventsListDiv.innerHTML = '<p>No events for this day.</p>';
     }
-
     viewEventsModal.style.display = 'flex';
 }
 
@@ -244,16 +278,18 @@ addEventButton.addEventListener("click", () => {
     const time = document.getElementById("event-time").value;
     const description = document.getElementById("event-description").value.trim();
     const category = document.getElementById("event-category").value;
+    const priority = document.getElementById("event-priority").value;
     if(!name || !date){
         alert("Event name and date are required.");
         return;
     }
-    addEventToCalendar(name, date, category, description, time);
+    addEventToCalendar(name, date, category, description, time, priority);
     document.getElementById("event-name").value = '';
     document.getElementById("event-date").value = '';
     document.getElementById("event-time").value = '';
     document.getElementById("event-description").value = '';
     document.getElementById("event-category").value = '';
+    document.getElementById("event-priority").value = 'Low';
     eventModal.style.display = "none";
 });
 

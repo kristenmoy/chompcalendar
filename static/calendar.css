@@ -100,6 +100,8 @@ body{
     justify-content: center;
     align-items: center;
     color: black;
+    pointer-events: none;
+    cursor: default;
 }
 
 .empty{
@@ -180,7 +182,7 @@ h1{
 
 #settings-link{
     position: fixed;
-    top: 15px;
+    top: 10px;
     right: 20px;
     font-size: 16px;
     color: black;
