@@ -141,11 +141,11 @@ function displayEvents(date, dayDiv){
     }
 }
 
-function addEventToCalendar(name, date, category = '') {
+function addEventToCalendar(name, date, category = '', description = '') {
     if (!events[date]) {
         events[date] = [];
     }
-    events[date].push({ name, category });
+    events[date].push({ name, category, description });
     generateCalendar(viewSelect.value);
 }
 
