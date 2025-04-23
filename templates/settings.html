@@ -35,6 +35,8 @@
             display: block;
             margin-bottom: 8px;
             font-weight: bold;
+            width: 100%;
+            text-align: left;
         }
 
         select{
@@ -80,7 +82,7 @@
         #logout-button:hover{
             background-color: #A52A2A;
         }
-        
+
         #logout-modal{
             display: none;
             position: fixed;
@@ -105,7 +107,7 @@
         #logout-modal-content button{
             margin: 10px;
         }
-        
+
         .modal-button-group{
             display: flex;
             justify-content: center;
@@ -145,9 +147,21 @@
             <option value="weekly" {% if default_view == 'weekly' %}selected{% endif %}>Weekly</option>
             <option value="monthly" {% if default_view == 'monthly' %}selected{% endif %}>Monthly</option>
         </select>
+
+        <!-- New: Sort by Priority dropdown (non-functional) -->
+        <label for="priority-sort">Sort Events by Priority:</label>
+        <select id="priority-sort" name="priority_sort">
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+            <option value="">None</option>
+        </select>
+
         <button type="submit">Save Preferences</button>
     </form>
+
     <a href="/calendar">Back to Calendar</a>
+
     <button id="logout-button">Log Out</button>
     <div id="logout-modal">
         <div id="logout-modal-content">
@@ -171,10 +185,12 @@
             const result = await res.json();
             alert(result.message);
         });
+
         const logoutButton = document.getElementById("logout-button");
         const logoutModal = document.getElementById("logout-modal");
         const confirmLogout = document.getElementById("confirm-logout");
         const cancelLogout = document.getElementById("cancel-logout");
+
         logoutButton.addEventListener("click", () => {
             logoutModal.style.display = "flex";
         });
